@@ -1,4 +1,6 @@
-import { BaseUser } from "./base-user.dto";
-export class CreateUserDto extends BaseUser {
-  createdAt: Date;
+import { BaseUserDto } from './base-user.dto';
+import { IsDate } from 'class-validator';
+export class CreateUserDto extends BaseUserDto {
+  @IsDate()
+  createdAt: Date = new Date();
 }
