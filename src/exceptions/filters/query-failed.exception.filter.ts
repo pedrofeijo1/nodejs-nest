@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 
-// all-exceptions.filter.ts
 @Catch(QueryFailedError)
 export class QueryFailedExceptionFilter implements ExceptionFilter {
   catch(exception: QueryFailedError) {
