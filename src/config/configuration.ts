@@ -5,7 +5,7 @@ export default () => ({
     port: process.env.APP_PORT,
   },
   jwt: {
-    secret: 'jwt-secret',
+    secret: process.env.JWT_SECRET,
   },
   postgres: {
     host: process.env.POSTGRES_HOST,
