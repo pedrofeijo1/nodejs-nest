@@ -19,12 +19,15 @@ export class HttpExceptionsFilter implements ExceptionFilter {
     const contextId = ContextIdFactory.create();
     this.moduleRef.registerRequestByContextId(request, contextId);
     const status = exception.getStatus() ?? HttpStatus.INTERNAL_SERVER_ERROR;
-    const message =
-      exception.message ?? 'Something happened, contact administrators!';
+    const exResponse = exception.getResponse();
 
-    response.status(status).json({
+    const finalResponse = {
       statusCode: status,
-      message: message,
-    });
+      message: exception.message,
+      errors:
+        exception.message != exResponse['message'] ? exResponse['message'] : [],
+    };
+    console.log(finalResponse);
+    response.status(status).json(finalResponse);
   }
 }

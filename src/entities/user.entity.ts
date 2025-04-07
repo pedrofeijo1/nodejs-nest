@@ -1,5 +1,13 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
-import { UserGenderEnum } from '../enums/user-gender.enum';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Company } from './company.entity';
 
 @Entity()
 export class User {
@@ -17,16 +25,15 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   email: string;
 
-  @Column({ type: 'int' })
-  age: number;
-
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({
-    type: 'enum',
-    enum: UserGenderEnum,
-    default: UserGenderEnum.UNSPECIFIED,
-  })
-  gender: string;
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
+
+  @ManyToOne(() => Company, (company) => company.users)
+  company: Company;
 }

@@ -11,8 +11,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get<string>('postgres.host'),
-        port: configService.get<number>('postgres.post'),
-        username: configService.get<string>('postgres.usernama'),
+        port: configService.get<number>('postgres.port'),
+        username: configService.get<string>('postgres.username'),
         password: configService.get<string>('postgres.password'),
         database: configService.get<string>('postgres.database'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],

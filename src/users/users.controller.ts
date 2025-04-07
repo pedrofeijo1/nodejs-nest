@@ -6,15 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  UsePipes,
-  ValidationPipe,
-  ParseIntPipe, Catch, HttpException, HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../dto/user/create-user.dto';
 import { UpdateUserDto } from '../dto/user/update-user.dto';
-import { QueryFailedError } from 'typeorm';
-import { AlreadyExistsException } from '../exceptions/already-exists.exception';
 
 /**
  * whatever the string pass in controller decorator it will be appended to

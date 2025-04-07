@@ -1,18 +1,17 @@
 import {
   IsAlphanumeric,
   IsEmail,
-  IsEnum,
+  IsIn,
   IsInt,
   IsNotEmpty,
   IsString,
   Matches,
   MinLength,
 } from 'class-validator';
-import { UserGenderEnum } from '../../enums/user-gender.enum';
 import { Match } from '../decorators/match.decorator';
 
 const passwordRegEx =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
 export class BaseUserDto {
   @IsNotEmpty()
@@ -30,14 +29,6 @@ export class BaseUserDto {
   @IsNotEmpty()
   @IsEmail(undefined, { message: 'Please provide valid Email.' })
   email: string;
-
-  @IsInt()
-  age: number;
-
-  @IsNotEmpty()
-  @IsString()
-  @IsEnum(UserGenderEnum)
-  gender: string;
 
   @IsNotEmpty()
   @Matches(passwordRegEx, {

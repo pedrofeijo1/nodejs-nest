@@ -5,25 +5,27 @@ import { CreateUserDto } from '../dto/user/create-user.dto';
 import { UpdateUserDto } from '../dto/user/update-user.dto';
 import { User } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Company } from '../entities/company.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Company)
+    private readonly companyRepository: Repository<Company>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User | void> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user: User = new User();
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
+    user.company = { id: 1 } as Company;
     user.name = createUserDto.name;
-    user.age = createUserDto.age;
     user.email = createUserDto.email;
     user.username = createUserDto.username;
     user.password = hashedPassword;
-    user.gender = createUserDto.gender;
     return this.userRepository.save(user);
   }
 
@@ -45,12 +47,11 @@ export class UsersService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(updateUserDto.password, salt);
 
+    user.id = id;
     user.name = updateUserDto.name;
-    user.age = updateUserDto.age;
     user.email = updateUserDto.email;
     user.username = updateUserDto.username;
     user.password = hashedPassword;
-    user.id = id;
     return this.userRepository.save(user);
   }
 

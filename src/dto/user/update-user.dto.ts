@@ -3,5 +3,5 @@ import { IsDate, IsNotEmpty } from 'class-validator';
 export class UpdateUserDto extends BaseUserDto {
   @IsDate()
   @IsNotEmpty()
-  updatedAt: Date;
+  createdAt: Date = new Date();
 }
