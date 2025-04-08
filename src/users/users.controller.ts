@@ -7,17 +7,16 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../dto/user/create-user.dto';
 import { UpdateUserDto } from '../dto/user/update-user.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { GetUser } from '../auth/decorators/get-user.decorator';
 
-/**
- * whatever the string pass in controller decorator it will be appended to
- * API URL. to call any API from this controller you need to add prefix which is
- * passed in controller decorator.
- * in our case our base URL is http://localhost:3000/user
- */
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
@@ -28,13 +27,13 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAllUser();
+  findAll(@GetUser() user) {
+    return this.userService.findAllUser(user.company);
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.viewUser(+id);
+    return this.userService.viewUser(id);
   }
 
   @Patch(':id')
@@ -42,7 +41,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.userService.updateUser(+id, updateUserDto);
+    return await this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')

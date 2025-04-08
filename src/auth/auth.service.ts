@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../dto/user/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { Company } from '../entities/company.entity';
 
 type AuthInput = { username: string; password: string };
 type SignInData = { userId: number; username: string };

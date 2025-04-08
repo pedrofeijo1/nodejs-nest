@@ -11,8 +11,6 @@ import { Company } from '../entities/company.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Company)
-    private readonly companyRepository: Repository<Company>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -29,12 +27,15 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  findAllUser(): Promise<User[]> {
-    return this.userRepository.find();
+  findAllUser(company: Company): Promise<User[]> {
+    return this.userRepository.find({ where: { company: company } });
   }
 
   viewUser(id: number): Promise<User | null> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({
+      where: { id: id },
+      relations: ['company'],
+    });
   }
 
   findByUserName(username: string): Promise<User | null> {

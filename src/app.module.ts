@@ -9,6 +9,7 @@ import configuration from './config/configuration';
 import { HttpExceptionsFilter } from './exceptions/filters/http.exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { QueryFailedExceptionFilter } from './exceptions/filters/query-failed.exception.filter';
+import { JwtModule } from './jwt/jwt.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { QueryFailedExceptionFilter } from './exceptions/filters/query-failed.ex
       isGlobal: true,
       load: [configuration],
     }),
+    JwtModule,
     DatabaseModule,
     AuthModule,
     UsersModule,
