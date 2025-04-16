@@ -27,7 +27,6 @@ export class HttpExceptionsFilter implements ExceptionFilter {
       errors:
         exception.message != exResponse['message'] ? exResponse['message'] : [],
     };
-    console.log(finalResponse);
     response.status(status).json(finalResponse);
   }
 }

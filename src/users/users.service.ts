@@ -19,7 +19,7 @@ export class UsersService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    user.company = { id: 1 } as Company;
+    user.company = { id: 1, name: 'Financial Control' } as Company;
     user.name = createUserDto.name;
     user.email = createUserDto.email;
     user.username = createUserDto.username;
@@ -39,7 +39,17 @@ export class UsersService {
   }
 
   findByUserName(username: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ username: username });
+    return this.userRepository.findOne({
+      where: { username: username },
+      relations: ['company'],
+    });
+  }
+
+  findByUserNameOrEmail(login: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: [{ email: login }, { username: login }],
+      relations: ['company'],
+    });
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {

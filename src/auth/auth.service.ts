@@ -3,12 +3,22 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../dto/user/create-user.dto';
-import { ConfigService } from '@nestjs/config';
-import { Company } from '../entities/company.entity';
 
-type AuthInput = { username: string; password: string };
-type SignInData = { userId: number; username: string };
-type AuthResult = { accessToken: string; username: string };
+type AuthInput = { login: string; password: string };
+type SignInData = {
+  userId: number;
+  name: string;
+  username: string;
+  email: string;
+  company: string;
+};
+type AuthResult = {
+  accessToken: string;
+  name: string;
+  username: string;
+  email: string;
+  company: string;
+};
 
 @Injectable()
 export class AuthService {
@@ -21,7 +31,9 @@ export class AuthService {
     const user = await this.validateUser(input);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'These credentials do not match our records',
+      );
     }
 
     return this.signIn(user);
@@ -39,7 +51,10 @@ export class AuthService {
 
     return {
       accessToken,
+      name: newUser.name,
       username: newUser.username,
+      email: newUser.email,
+      company: newUser.company.name,
     };
   }
 
@@ -53,17 +68,23 @@ export class AuthService {
 
     return {
       accessToken,
+      name: user.name,
       username: user.username,
+      email: user.email,
+      company: user.company,
     };
   }
 
   async validateUser(input: AuthInput): Promise<SignInData | null> {
-    const user = await this.service.findByUserName(input.username);
+    const user = await this.service.findByUserNameOrEmail(input.login);
 
     if (user && (await bcrypt.compare(input.password, user.password))) {
       return {
         userId: user.id,
+        name: user.name,
         username: user.username,
+        email: user.email,
+        company: user.company.name,
       };
     }
 

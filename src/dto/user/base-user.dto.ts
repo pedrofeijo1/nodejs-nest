@@ -16,11 +16,11 @@ const passwordRegEx =
 export class BaseUserDto {
   @IsNotEmpty()
   @IsString()
-  @MinLength(2, { message: 'Name must have atleast 2 characters.' })
+  @MinLength(2, { message: 'Name must have at least 2 characters.' })
   name: string;
 
   @IsNotEmpty()
-  @MinLength(3, { message: 'Username must have atleast 3 characters.' })
+  @MinLength(3, { message: 'Username must have at least 3 characters.' })
   @IsAlphanumeric(undefined, {
     message: 'Username does not allow other than alpha numeric chars.',
   })
